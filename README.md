@@ -9,10 +9,20 @@
 
 ```bash
 npm install koishi-plugin-group-gags koishi-plugin-chatlog
-npm install koishi-plugin-jieba
 ```
 
-需要 `koishi-plugin-chatlog`（数据层）与数据库插件。**koishi.yml 里把 chatlog 排在 group-gags 之前**（收集器先注册，指令才不会被收集）。
+需要 `koishi-plugin-chatlog`（数据层）、数据库插件，以及一个 **jieba 分词服务 provider**（二选一）：
+
+```bash
+npm install koishi-plugin-jieba        # @node-rs/jieba，同步，原生绑定
+# 或
+npm install koishi-plugin-hanlpjieba   # @azulores/jieba-hanlp，本地 ONNX，异步
+```
+
+**同一时刻只能启用一个 jieba provider**（同时启用会报 `service jieba has been registered`）。
+消费方只声明 `inject: ['jieba']`，**切换 provider 不需要改本插件、也不需要额外配置项**。
+
+**koishi.yml 里把 chatlog 排在 group-gags 之前**（收集器先注册，指令才不会被收集）。
 
 ## 功能
 
