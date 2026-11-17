@@ -1,7 +1,7 @@
 {
   "name": "koishi-plugin-group-gags",
   "description": "群聊整活合集 for Koishi：问玩法、复读、Mock 名人名言模仿（数据来自 koishi-plugin-chatlog 收集器）",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
   "files": [
@@ -25,13 +25,7 @@
   },
   "peerDependencies": {
     "koishi": "^4.18.11",
-    "koishi-plugin-chatlog": "^0.1.0",
-    "koishi-plugin-jieba": "^0.5.0"
-  },
-  "peerDependenciesMeta": {
-    "koishi-plugin-jieba": {
-      "optional": true
-    }
+    "koishi-plugin-chatlog": "^0.2.0"
   },
   "repository": {
     "type": "git",

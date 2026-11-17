@@ -2,12 +2,11 @@
 // 群聊整活合集：你好 / 问…… / 复读 / Mock 名人名言。
 // 数据层是 koishi-plugin-chatlog（收集器）：本插件只读不写，经 ctx.chatlog 服务访问。
 import { Schema, Context, h } from 'koishi'
-import { } from 'koishi-plugin-jieba'
 import { } from 'koishi-plugin-chatlog'
 import { restoreFaces } from 'koishi-plugin-chatlog'
 
 export const name = 'group-gags'
-export const inject = { required: ['database', 'chatlog', 'jieba'] }
+export const inject = { required: ['database', 'chatlog'] }
 
 export interface Config {
   // —— 功能开关 ——
@@ -276,7 +275,9 @@ async function mockMiddleware(
   //   - 普通词：码点长度 >= 2（用码点而非 UTF-16 单元，避免 😀/⏰ 行为不一致）
   //   - emoji：单个也算（允许 emoji 作为可匹配 token）
   const EMOJI_RE = /\p{Extended_Pictographic}/u;
-  let jbFltList = ctx.jieba.cut(plain)
+  // 分词统一走 chatlog 服务：由 chatlog 的 segmenter 配置（jieba / hanlpjieba）
+  // 决定实现，本插件不再自己注入 jieba（一处配置、两个插件同源）。
+  let jbFltList = (await ctx.chatlog.segment(plain))
     .filter((word) => word.trim().length > 0)
     .filter((word) => [...word].length >= 2 || EMOJI_RE.test(word));
 
